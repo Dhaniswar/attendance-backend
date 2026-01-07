@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'authentications',
     'users',
     'attendance',
+    'biometrics',
 ]
 
 MIDDLEWARE = [
