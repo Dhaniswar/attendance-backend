@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'attendance',
     'biometrics',
+    'classes',
 ]
 
 MIDDLEWARE = [
