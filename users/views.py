@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 import json
-from authentications.permissions import IsAdminOrTeacher
+from authentications.permissions import IsAdminOrTeacher, IsSelfOrAdmin
 from authentications.models import User
 from .serializers import (
     UserSerializer, UserCreateSerializer, UserUpdateSerializer
