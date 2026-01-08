@@ -4,7 +4,8 @@ from django.core.cache import cache
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from authentications.models import User
-from .models import SystemLog, Notification
+from notifications.models import Notification
+from .models import SystemLog
 
 logger = logging.getLogger(__name__)
 

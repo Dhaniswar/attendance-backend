@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'biometrics',
     'classes',
     'core',
+    'notifications',
 ]
 
 MIDDLEWARE = [
