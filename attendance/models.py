@@ -10,9 +10,8 @@ class Attendance(models.Model):
         ('late', 'Late'),
         ('half_day', 'Half Day'),
     )
-    
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attendances')
-    date = models.DateField(default=timezone.now())
+    date = models.DateField(default=timezone.now)
     time_in = models.TimeField(null=True, blank=True)
     time_out = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='present')
