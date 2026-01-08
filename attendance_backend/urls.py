@@ -36,6 +36,7 @@ urlpatterns = [
     path('biometrics/', include('biometrics.urls')),
     path('classes/', include('classes.urls')),
     path('notifications/', include('notifications.urls')),
+    path('analytics/', include('analytics.urls')),
     path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
