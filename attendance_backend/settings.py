@@ -41,11 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'channels',
     'authentications',
     'users',
     'attendance',
     'biometrics',
     'classes',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +105,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'attendance_backend.wsgi.application'
 
+ASGI_APPLICATION = 'attendance_backend.asgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -144,12 +148,6 @@ SWAGGER_SETTINGS = {
     },
     "USE_SESSION_AUTH": False,
 }
-
-
-
-FRONTEND_URL = "http://wmn-env.eba-dxnam5v8.us-east-1.elasticbeanstalk.com"  
-
-
 
 
 SIMPLE_JWT = {
@@ -213,3 +211,75 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Channels (WebSocket)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL', default='redis://localhost:6379')],
+        },
+    },
+}
+
+# Redis Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.environ.get('REDIS_URL', default='redis://localhost:6379/1'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# Celery
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+# Face Recognition Settings
+FACE_RECOGNITION_MODEL = os.environ.get('FACE_RECOGNITION_MODEL', default='mediapipe')  # mediapipe, insightface, deepface
+FACE_EMBEDDING_SIZE = 128
+FACE_CONFIDENCE_THRESHOLD = 0.8
+LIVENESS_THRESHOLD = 0.7
+
+# File upload limits
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'level': 'DEBUG',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'api': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
