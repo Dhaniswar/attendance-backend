@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
 from authentications.models import User
 
@@ -11,7 +12,7 @@ class Attendance(models.Model):
         ('half_day', 'Half Day'),
     )
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attendances')
-    date = models.DateField(default=timezone.now)
+    date = models.DateField(default=datetime.date.today)
     time_in = models.TimeField(null=True, blank=True)
     time_out = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='present')
