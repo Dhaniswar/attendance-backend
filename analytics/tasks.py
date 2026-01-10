@@ -9,7 +9,7 @@ from core.logging.system_logger import log_system_event
 @shared_task
 def send_daily_attendance_report():
     """Send daily attendance report to admins"""
-    from core.logging.system_logger import get_attendance_statistics
+    from analytics.statistics import get_attendance_statistics
     
     today = timezone.now().date()
     stats = get_attendance_statistics(today)

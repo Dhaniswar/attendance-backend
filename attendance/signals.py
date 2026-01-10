@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from attendance.models import Attendance
-from core.logging.system_logger import send_notification
+from notifications.sender import send_notification
 
 
 
