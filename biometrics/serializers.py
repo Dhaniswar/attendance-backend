@@ -1,4 +1,13 @@
 from rest_framework import serializers
+from .models import FaceImage
+
+
+
+class FaceImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FaceImage
+        fields = ['id', 'image', 'encoding', 'is_verified', 'created_at']
+        read_only_fields = ['id', 'encoding', 'is_verified', 'created_at']
 
 
 class FaceDetectionSerializer(serializers.Serializer):

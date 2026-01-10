@@ -9,7 +9,7 @@ from .serializers import (
 )
 from .services import face_recognition
 from authentications.models import User
-# from core.logging import log_system_event
+from core.logging.system_logger import log_system_event
 
 
 class FaceDetectionView(APIView):
