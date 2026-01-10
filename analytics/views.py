@@ -3,7 +3,7 @@ from rest_framework.decorators import  api_view, permission_classes
 from rest_framework.response import Response
 from attendance.models import Attendance
 from authentications.permissions import IsAdminOrTeacher
-from core.logging.system_logger import get_user_statistics, get_attendance_statistics
+from analytics.statistics import get_user_statistics, get_attendance_statistics
 
 
 
