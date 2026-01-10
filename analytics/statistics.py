@@ -1,11 +1,6 @@
 import logging
 from django.utils import timezone
-from django.core.cache import cache
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 from authentications.models import User
-from notifications.models import Notification
-from logs.models import SystemLog
 
 logger = logging.getLogger(__name__)
 

@@ -2,12 +2,17 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-import json
 from authentications.permissions import IsAdminOrTeacher, IsSelfOrAdmin
 from authentications.models import User
 from .serializers import (
     UserSerializer, UserCreateSerializer, UserUpdateSerializer
 )
+from biometrics.serializers import FaceEnrollmentSerializer
+from biometrics import face_recognition
+from core.logging.system_logger import log_system_event
+from notifications.sender import send_notification
+from analytics.statistics import get_user_statistics
+
 
 
 class UserViewSet(viewsets.ModelViewSet):

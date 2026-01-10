@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from attendance.models import Attendance
 from authentications.permissions import IsAdminOrTeacher
 from analytics.statistics import get_user_statistics, get_attendance_statistics
+from biometrics import face_recognition
 
 
 
@@ -17,7 +18,6 @@ from analytics.statistics import get_user_statistics, get_attendance_statistics
 @permission_classes([IsAdminOrTeacher])
 def dashboard_statistics(request):
     """Get dashboard statistics"""
-    from django.db.models import Count, Q, Avg
     
     # User statistics
     user_stats = get_user_statistics()

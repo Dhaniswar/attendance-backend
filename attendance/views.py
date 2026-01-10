@@ -3,8 +3,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
+
+from biometrics import face_recognition
 from .models import Attendance
 from .serializers import AttendanceSerializer
+from biometrics.serializers import FaceDetectionSerializer
 
 
 class AttendanceViewSet(viewsets.ModelViewSet):

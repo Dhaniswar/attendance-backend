@@ -1,5 +1,6 @@
 from django.db import models
 from authentications.models import User
+from .choices import DAY_OF_WEEK_CHOICES
 
 
 class Class(models.Model):
@@ -39,17 +40,7 @@ class AttendanceSchedule(models.Model):
         related_name='schedules'
     )
 
-    day_of_week = models.IntegerField(
-        choices=[
-            (0, 'Monday'),
-            (1, 'Tuesday'),
-            (2, 'Wednesday'),
-            (3, 'Thursday'),
-            (4, 'Friday'),
-            (5, 'Saturday'),
-            (6, 'Sunday'),
-        ]
-    )
+    day_of_week = models.IntegerField(choices=DAY_OF_WEEK_CHOICES)
 
     start_time = models.TimeField()
     end_time = models.TimeField()
