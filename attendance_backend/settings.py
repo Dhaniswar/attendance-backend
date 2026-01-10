@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
+    'corsheaders',
+    'rest_framework',
     'drf_yasg',
+    'django_filters',
     'channels',
     'authentications',
     'users',
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'core',
     'notifications',
     'analytics',
+    'logs',
 ]
 
 MIDDLEWARE = [
