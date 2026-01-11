@@ -394,7 +394,6 @@ class FaceRecognitionSystem:
             raise ValueError("Failed to encode image")
         
         # Save to Django file field
-        from models import FaceImage
         face_image = FaceImage()
         
         file_name = f"{filename}_{uuid.uuid4().hex[:8]}.jpg"

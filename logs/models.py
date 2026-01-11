@@ -1,25 +1,12 @@
 from django.db import models
 from authentications.models import User
+from .choices import LOG_LEVEL_CHOICES, LOG_TYPE_CHOICES
 
 
 class SystemLog(models.Model):
-    LOG_LEVELS = (
-        ('info', 'Info'),
-        ('warning', 'Warning'),
-        ('error', 'Error'),
-        ('debug', 'Debug'),
-    )
     
-    LOG_TYPES = (
-        ('attendance', 'Attendance'),
-        ('face_recognition', 'Face Recognition'),
-        ('system', 'System'),
-        ('user', 'User'),
-        ('security', 'Security'),
-    )
-    
-    level = models.CharField(max_length=20, choices=LOG_LEVELS, default='info')
-    type = models.CharField(max_length=50, choices=LOG_TYPES, default='system')
+    level = models.CharField(max_length=20, choices=LOG_LEVEL_CHOICES, default='info')
+    type = models.CharField(max_length=50, choices=LOG_TYPE_CHOICES, default='system')
     message = models.TextField()
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)

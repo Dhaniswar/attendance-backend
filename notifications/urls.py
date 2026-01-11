@@ -1,10 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from . import views
+from .views import NotificationViewSet
 
 router = DefaultRouter()
-router.register('', views.NotificationViewSet, basename='notification')
+router.register('', NotificationViewSet, basename='notification')
 
 urlpatterns = [
 
