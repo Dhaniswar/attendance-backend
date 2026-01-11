@@ -1,9 +1,10 @@
 from django.apps import AppConfig
 
 
-class UsersConfig(AppConfig):
+class AttendanceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'users'
-    
+    name = 'attendance'
+
+
     def ready(self):
-        import users.signals
+        import attendance.signals
