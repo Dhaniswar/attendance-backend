@@ -87,3 +87,38 @@ class UserViewSet(viewsets.ModelViewSet):
         stats = get_user_statistics()
         return Response(stats)
 
+
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        q = request.query_params.get('q', '')
+        queryset = self.get_queryset().filter(
+            first_name__icontains=q
+        ) | self.get_queryset().filter(
+            last_name__icontains=q
+        ) | self.get_queryset().filter(
+            email__icontains=q
+        )
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def inactive(self, request):
+        queryset = self.get_queryset().filter(is_active=False)
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    @action(detail=True, methods=['patch'])
+    def status(self, request, pk=None):
+        user = self.get_object()
+        user.is_active = request.data.get('is_active', True)
+        user.save()
+        return Response(UserSerializer(user).data)
+    
+
+    @action(detail=False, methods=['post'])
+    def import_users(self, request):
+        file = request.FILES.get('file')
+        # parse CSV and create users...
+        return Response({'imported': 0, 'failed': 0})
+

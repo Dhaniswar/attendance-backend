@@ -1,6 +1,9 @@
 from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.http import HttpResponse
+from .export import export_attendance_to_excel
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -70,3 +73,33 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             AttendanceSerializer(attendance).data,
             status=status.HTTP_201_CREATED
         )
+
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def export_attendance(request):
+    """
+    Export attendance between start and end date to Excel
+    """
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    file_format = request.GET.get('format', 'excel')
+
+    if not start_date or not end_date:
+        return Response({"detail": "start_date and end_date are required"}, status=400)
+
+    output = export_attendance_to_excel(start_date, end_date)
+
+    filename = f"attendance_{start_date}_to_{end_date}.{ 'xlsx' if file_format=='excel' else 'csv'}"
+
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response

@@ -5,6 +5,9 @@ from attendance.models import Attendance
 from authentications.permissions import IsAdminOrTeacher
 from analytics.statistics import get_user_statistics, get_attendance_statistics
 from biometrics import face_recognition
+from django.db.models import Count
+from django.utils.dateparse import parse_date
+from attendance.models import Attendance
 
 
 
@@ -57,4 +60,34 @@ def dashboard_statistics(request):
         'recent_activity': recent_activity,
         'face_recognition_model': face_recognition.model_name,
         'face_confidence_threshold': face_recognition.threshold
+    })
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminOrTeacher])
+def attendance_heatmap(request):
+    """Return count of attendance grouped by date"""
+
+    start_date = parse_date(request.GET.get('start_date'))
+    end_date = parse_date(request.GET.get('end_date'))
+
+    qs = Attendance.objects.all()
+
+    if start_date and end_date:
+        qs = qs.filter(date__range=[start_date, end_date])
+
+    data = (
+        qs.values('date')
+          .annotate(count=Count('id'))
+          .order_by('date')
+    )
+
+    return Response({
+        'start_date': start_date,
+        'end_date': end_date,
+        'data': list(data)
     })
