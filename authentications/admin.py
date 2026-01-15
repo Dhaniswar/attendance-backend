@@ -91,7 +91,6 @@ class CustomUserAdmin(UserAdmin):
         "created_at",
         "updated_at",
         "last_login",
-        "student_id",
     )
 
     add_fieldsets = (

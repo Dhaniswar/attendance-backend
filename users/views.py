@@ -4,11 +4,13 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from authentications.permissions import IsAdminOrTeacher, IsSelfOrAdmin
 from authentications.models import User
+from rest_framework import parsers
 from .serializers import (
     UserSerializer, UserCreateSerializer, UserUpdateSerializer
 )
 from biometrics.serializers import FaceEnrollmentSerializer
-from biometrics import face_recognition
+from attendance_backend.pagination import CustomPagination
+from biometrics.face_recognition import face_recognition
 from core.logging.system_logger import log_system_event
 from notifications.sender import send_notification
 from analytics.statistics import get_user_statistics
@@ -16,6 +18,9 @@ from analytics.statistics import get_user_statistics
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    # parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.FileUploadParser)
+    
+    pagination_class = CustomPagination
     queryset = User.objects.all()
     permission_classes = [IsAdminOrTeacher]
     filter_backends = [DjangoFilterBackend]
