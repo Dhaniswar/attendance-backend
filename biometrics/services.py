@@ -17,6 +17,12 @@ class FaceRecognitionService:
             "is_live": True,
             "score": 0.9
         }
+    # ADD THIS METHOD
+    def enroll_face(self, user, images):
+        """Enroll user's face - delegates to actual implementation"""
+        # Import the real implementation to avoid circular imports
+        from .face_recognition import face_recognition as fr_system
+        return fr_system.enroll_face(user, images)
 
 
 face_recognition = FaceRecognitionService()

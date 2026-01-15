@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+
+from attendance_backend.pagination import CustomPagination
 from .models import Notification
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,6 +11,7 @@ from rest_framework import permissions
 
 
 class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
+    pagination_class = CustomPagination
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
     
