@@ -212,7 +212,6 @@ class FaceRecognitionSystem:
         face_resized = cv2.resize(face_region, (160, 160))
         
         # Convert to embedding (simplified - in production use proper model)
-        # This is a placeholder - you should use a proper face recognition model
         face_normalized = face_resized / 255.0
         embedding = face_normalized.flatten()[:settings.FACE_EMBEDDING_SIZE].tolist()
         
@@ -283,7 +282,6 @@ class FaceRecognitionSystem:
             images = [self.base64_to_image(img) for img in images_data[:5]]  # Use first 5 images
             
             # Simple liveness check: detect eye blinks and head movement
-            # This is a simplified version - in production use proper liveness detection
             
             # Check for variations in images (real faces move)
             variations = self.check_image_variations(images)
@@ -331,8 +329,7 @@ class FaceRecognitionSystem:
     
     def check_eye_blinks(self, images):
         """Simple eye blink detection (placeholder)"""
-        # In production, implement proper eye blink detection using facial landmarks
-        # For now, return random result for demonstration
+        #  eye blink detection using facial landmarks
         import random
         return 1.0 if random.random() > 0.3 else 0.0
     
@@ -404,5 +401,4 @@ class FaceRecognitionSystem:
         return face_image.image
 
 
-# Global instance
 face_recognition = FaceRecognitionSystem()

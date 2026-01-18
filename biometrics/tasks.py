@@ -47,7 +47,6 @@ def backup_face_encodings():
             'updated_at': user.last_face_update.isoformat() if user.last_face_update else None
         })
     
-    # In production, save to secure storage (S3, encrypted file, etc.)
     # For now, just log the backup
     log_system_event(
         level='info',

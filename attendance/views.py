@@ -3,6 +3,8 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
+
+from attendance_backend.pagination import CustomPagination
 from .export import export_attendance_to_excel
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
@@ -14,6 +16,7 @@ from biometrics.serializers import FaceDetectionSerializer
 
 
 class AttendanceViewSet(viewsets.ModelViewSet):
+    pagination_class = CustomPagination
     serializer_class = AttendanceSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend]

@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 
+from attendance_backend.pagination import CustomPagination
+
 from .serializers import (
     FaceDetectionSerializer,
     LivenessCheckSerializer,
@@ -13,6 +15,7 @@ from core.logging.system_logger import log_system_event
 
 
 class FaceDetectionView(APIView):
+    pagination_class = CustomPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -38,6 +41,7 @@ class FaceDetectionView(APIView):
 
 
 class FaceVerificationView(APIView):
+    pagination_class = CustomPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -60,6 +64,7 @@ class FaceVerificationView(APIView):
 
 
 class LivenessCheckView(APIView):
+    pagination_class = CustomPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -73,6 +78,7 @@ class LivenessCheckView(APIView):
 
 
 class FaceEnrollmentView(APIView):
+    pagination_class = CustomPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
