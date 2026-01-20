@@ -79,17 +79,51 @@ class FaceEnrollmentView(APIView):
         serializer = FaceEnrollmentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        student_id = serializer.validated_data['student_id']
+        images = serializer.validated_data['images']
+
         try:
-            user = User.objects.get(
-                student_id=serializer.validated_data['student_id']
-            )
+            user = User.objects.get(student_id=student_id)
         except User.DoesNotExist:
             return Response(
                 {"error": "Student not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # enrollment logic goes here
-        return Response(
-            {"success": True, "message": "Face enrolled successfully"}
-        )
+        try:
+            result = face_recognition.enroll_face(user, images)
+
+            return Response(
+                {
+                    "success": True,
+                    "data": result
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        except ValueError as e:
+            # Known validation issues (no face detected, bad images, etc.)
+            return Response(
+                {
+                    "success": False,
+                    "error": str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            # Unexpected system errors
+            log_system_event(
+                level="error",
+                type="face_enrollment",
+                message=str(e),
+                user=request.user
+            )
+
+            return Response(
+                {
+                    "success": False,
+                    "error": "Face enrollment failed. Please try again later."
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
