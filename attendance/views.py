@@ -7,7 +7,7 @@ from .export import export_attendance_to_excel
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
-from biometrics import face_recognition
+from biometrics.face_recognition import face_recognition
 from .models import Attendance
 from .serializers import AttendanceSerializer
 from biometrics.serializers import FaceDetectionSerializer
@@ -31,6 +31,8 @@ class AttendanceViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().filter(date=today)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    
 
     @action(detail=False, methods=['post'])
     def mark_with_face(self, request):
@@ -57,7 +59,7 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             user.face_encoding
         )
 
-        if not result['verified']:
+        if not result.get('verified'):
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
         attendance = Attendance.objects.create(
@@ -65,7 +67,7 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             date=today,
             time_in=timezone.now().time(),
             verified_by_face=True,
-            face_confidence=result['confidence'],
+            face_confidence=result.get('confidence'),
             created_by=user
         )
 
@@ -73,8 +75,6 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             AttendanceSerializer(attendance).data,
             status=status.HTTP_201_CREATED
         )
-
-
 
 
 
